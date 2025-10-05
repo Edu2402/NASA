@@ -387,8 +387,11 @@ async function sendMessage() {
 
     if (!originalUserMessage) return; 
 
-    // MODIFICATION: Force the AI to respond in English
-    const userMessageWithLanguageInstruction = "Always respond in English. " + originalUserMessage;
+    // --- RESTRICCIÓN TEMÁTICA IMPLEMENTADA AQUÍ ---
+    const thematicInstruction = "Your sole purpose is to act as a Space Biology and NASA-related assistant. You MUST respond ONLY about NASA, space biology, space missions, or related science topics. For any other topic, you must politely decline and state that you can only answer questions about NASA and space biology. Do not break this rule. ";
+
+    // MODIFICATION: Force the AI to respond in English and apply thematic restriction
+    const userMessageWithInstructions = thematicInstruction + "Always respond in English. The user is asking: " + originalUserMessage;
 
     // 1. Display the user message and clear the input
     appendMessage('user', originalUserMessage); // Display the original message
@@ -412,8 +415,8 @@ async function sendMessage() {
             },
             body: JSON.stringify({
                 contents: [{
-                    // Send the message with the English instruction
-                    parts: [{ text: userMessageWithLanguageInstruction }]
+                    // Send the message with the thematic and language instruction
+                    parts: [{ text: userMessageWithInstructions }]
                 }]
             })
         });
